@@ -105,48 +105,62 @@ $ react-native run android
   
 
 ##	Importing the Library
-	Once Google Pay/Android Pay is enabled in your app, jump into your app's entrypoint and make the PaymentRequest globally available to your app.
-
-		// index.js
-
 ```javascript
 import GPay, { GooglePayImage } from 'react-native-gpay'
-
-// TODO: What to do with the module?
-GPay;
 ```
 ##	 Initializing the Payment Request
 	To initialize a Payment Request, you'll need to provide Payment Request details.
 
-▪  Card Networks Details
+▪  Card Networks Details (Suported Brands)
  
- ```
-   const cardNetworks = ['AMEX', 'JCB', 'MASTERCARD', 'VISA'] // G-PAY SUPPORT CARD.
+  ```
+    const cardNetworks = ['AMEX', 'JCB', 'MASTERCARD', 'VISA'] // G-PAY SUPPORT CARD.
+
   ```
   
 ▪  Payment Request Details
     
     The Payment Request is where you defined the forms of payment that you accept. To enable Android Pay, we'll define a payment gateway of android-pay. We're also required to pass a data object to configures android Pay. This is where we provide our merchant id, define the supported card types and the currency we'll be operating in.
    
+   GATEWAY INTEGRATION
    ```
-   const paymentRequest = {
-  cardPaymentMethodMap: {
-    gateway: {
-      name: 'GATEWAY_NAME', // Identify your gateway and your app's gateway merchant identifier     https://developers.google.com/pay/api/android/reference/object#PaymentMethodTokenizationSpecification
-      merchantId: '055XXXXXXXXXXXXX336',  // YOUR_GATEWAY_MERCHANT_ID
-      clientKey: 'sandbox_XXXXXXXXXXXXndxm44jw', // OPTIONAL YOUR_TOKENIZATION_KEY. Need for BRAINTREE & STRIPE GATEWAY.
-      sdkVersion: 'client.VERSION' // OPTIONAL YOUR Client.VERSION. Need for BRAINTREE & STRIPE GATEWAY.
-    },
-    cardNetworks
-  },
-  transaction: {
-    totalPrice: '11',
-    totalPriceStatus: 'FINAL', // PAYMENT AMOUNT STATUS 
-    currencyCode: 'USD' // CURRENCY CODE
-  },
-  merchantName: 'XXXXXXXXXXXX'  // MERCHANT NAME Information about the merchant requesting payment information
-}
-```
+    const paymentRequest = {
+      cardPaymentMethodMap: {
+        gateway: {
+          name: 'GATEWAY_NAME', // Identify your gateway and your app's gateway merchant identifier     https://developers.google.com/pay/api/android/reference/object#PaymentMethodTokenizationSpecification
+          merchantId: '055XXXXXXXXXXXXX336',  // YOUR_GATEWAY_MERCHANT_ID
+          clientKey: 'sandbox_XXXXXXXXXXXXndxm44jw', // OPTIONAL YOUR_TOKENIZATION_KEY. Need for BRAINTREE & STRIPE GATEWAY.
+          sdkVersion: 'client.VERSION' // OPTIONAL YOUR Client.VERSION. Need for BRAINTREE & STRIPE GATEWAY.
+        },
+        cardNetworks
+      },
+      transaction: {
+        totalPrice: '11',
+        totalPriceStatus: 'FINAL', // PAYMENT AMOUNT STATUS 
+        currencyCode: 'USD' // CURRENCY CODE
+      },
+        merchantName: 'XXXXXXXXXXXX'  // MERCHANT NAME Information about the merchant requesting payment information
+      }
+  ```
+
+  DIRECT 
+    ```
+    const paymentRequest = {
+      cardPaymentMethodMap: {
+        gateway: {
+          protocolVersion: 'ECv1',
+          publicKey: 'BC9u7amr4kFD8qsdxnEfWV7RPDR9v4gLLkx3jfyaGOvxBoEuLZKE0Tt5O2jMMxJ9axHpAZD2Jhi4E74nqxr944=',
+        },
+        cardNetworks
+      },
+      transaction: {
+        totalPrice: '11',
+        totalPriceStatus: 'FINAL', // PAYMENT AMOUNT STATUS 
+        currencyCode: 'USD' // CURRENCY CODE
+      },
+        merchantName: 'XXXXXXXXXXXX'  // MERCHANT NAME Information about the merchant requesting payment information
+      }
+  ```
 
 ▪  Check Google Pay (Android-Pay) Support.
 
@@ -165,14 +179,11 @@ GPay;
   }
   ```
   
-
 Once you've defined your paymentrequest you're ready to initialize your Payment Request.
 
 ```es6
-  const paymentRequestToken = new GPay(GPay.ENVIRONMENT_TEST, paymentRequest);
+  const paymentRequestToken = GPay(GPay.ENVIRONMENT_TEST, paymentRequest);
 ```
-
-🚨 Note: On Android, display items are not displayed within the Android Pay view. Instead, the User Flows documentation suggests showing users a confirmation view where you list the display items. When using React Native Payments, show this view after receiving the PaymentResponse.
 
 ## Displaying the Payment Request
 
@@ -185,18 +196,23 @@ Now that you've setup your Payment Request Token, displaying it is as simple as 
 Now that we know how to initialize, display, and dismiss a Payment Request, let's take a look at how to process payments.
 
 When a user accepts to pay, GPay.show will resolve to a Payment Response.	
+// You can change environment here ENVIRONMENT_TEST,ENVIRONMENT_PRODUCTION
 
 ```
-  const token = await GPay.show(
-      GPay.ENVIRONMENT_TEST, // You can change environment here ENVIRONMENT_TEST,ENVIRONMENT_PRODUCTION
-      paymentRequest // 
-      ).catch(error => {
-      this.setState({ text: `error: ${error}` })
-      return error;
-    })
+  GPay.show(GPay.ENVIRONMENT_TEST, paymentRequest).then(function(response) {
+    console.log("sucess", response);
+    // Process response
+  }).catch(function(err) {
+    console.log("Uh oh, something bad happened", err.message);
+    // Handle Error
+  });
 ```
 
 You can learn more about server-side decrypting of Payment Tokens on Google Payment Token Format Reference documentation.
+
+GOOGLE PAY
+https://developers.google.com/pay/api/android/guides/resources/payment-data-cryptography#public-key-format
+https://developers.google.com/pay/api/android/guides/tutorial
 
 ## API
 

@@ -1,23 +1,34 @@
 {
-  "name": "react_native_g_pay",
-  "version": "0.0.1",
-  "private": true,
+  "author": {
+    "name": "chiragjadav",
+    "email": "chiragjadav237@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/JadavChirag/react-native-GPay/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "A framework for building react native google pay payment method",
+  "homepage": "https://github.com/JadavChirag/react-native-GPay#readme",
+  "keywords": [
+    "react native payment",
+    "react native braintree",
+    "react native stripe",
+    "react native G-Pay",
+    "react native stripe g-pay example",
+    "react native g-pay integration",
+    "react native g-pay example",
+    "rn g-pay braintree example"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "react-native-gpay",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JadavChirag/react-native-GPay.git"
+  },
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "react": "16.6.3",
-    "react-native": "0.57.8",
-    "react-native-gpay": "^1.0.2"
-  },
-  "devDependencies": {
-    "babel-jest": "23.6.0",
-    "jest": "23.6.0",
-    "metro-react-native-babel-preset": "0.51.0",
-    "react-test-renderer": "16.6.3"
-  },
-  "jest": {
-    "preset": "react-native"
-  }
+  "version": "1.0.5"
 }
