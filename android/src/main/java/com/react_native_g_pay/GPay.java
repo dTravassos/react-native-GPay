@@ -86,7 +86,7 @@ public class GPay extends ReactContextBaseJavaModule {
      * href="https://developers.google.com/pay/api/android/reference/object#PaymentMethodTokenizationSpecification">PaymentMethodTokenizationSpecification</a>
      */
     private static JSONObject getTokenizationSpecification(ReadableMap gateway) throws JSONException {
-       if (gateway.getString("publicKey") != null && gateway.getString("protocolVersion") != null) {
+       if (gateway.hasKey("publicKey") && gateway.hasKey("protocolVersion")) {
            return buildDirectIntegration(gateway);
        }
 
