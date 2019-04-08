@@ -332,11 +332,8 @@ public class GPay extends ReactContextBaseJavaModule {
                                     try {
                                         JSONObject paymentMethodData =
                                                 paymentDataJson.getJSONObject("paymentMethodData");
-                                        String token = paymentMethodData
-                                                .getJSONObject("tokenizationData").getString("token");
-                                        Log.v("Token : ", token);
                                         Log.v("Response", paymentMethodData.toString());
-                                        mRequestPaymentPromise.resolve(token);
+                                        mRequestPaymentPromise.resolve(paymentMethodData.toString());
                                     } catch (JSONException e) {
                                         mRequestPaymentPromise.reject(E_PAYMENT_DATA, e.getMessage());
                                     }
