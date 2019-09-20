@@ -25,6 +25,8 @@ project.xcworkspace
 # Android/IntelliJ
 #
 android/build/
+android/.gradle/
+android/.idea/
 .idea
 .gradle
 local.properties

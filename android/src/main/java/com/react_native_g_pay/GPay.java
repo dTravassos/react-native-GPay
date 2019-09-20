@@ -171,7 +171,7 @@ public class GPay extends ReactContextBaseJavaModule {
      */
     private static JSONArray getAllowedCardAuthMethods() {
         return new JSONArray()
-                //.put("CRYPTOGRAM_3DS")
+                .put("CRYPTOGRAM_3DS")
                 .put("PAN_ONLY");
     }
 
@@ -226,6 +226,7 @@ public class GPay extends ReactContextBaseJavaModule {
         transactionInfo.put("totalPrice", transaction.getString("totalPrice"));
         transactionInfo.put("totalPriceStatus", transaction.getString("totalPriceStatus"));
         transactionInfo.put("currencyCode", transaction.getString("currencyCode"));
+        transactionInfo.put("countryCode", transaction.getString("countryCode"));
 
         return transactionInfo;
     }
@@ -333,23 +334,24 @@ public class GPay extends ReactContextBaseJavaModule {
                                         JSONObject paymentMethodData =
                                                 paymentDataJson.getJSONObject("paymentMethodData");
                                         Log.v("Response", paymentMethodData.toString());
+
                                         mRequestPaymentPromise.resolve(paymentMethodData.toString());
                                     } catch (JSONException e) {
                                         mRequestPaymentPromise.reject(E_PAYMENT_DATA, e.getMessage());
                                     }
 
                                 } else {
-                                    mRequestPaymentPromise.reject(E_AUTO_RESOLVE_FAILED, "method is null");
+                                    mRequestPaymentPromise.reject(E_AUTO_RESOLVE_FAILED, "Falha no Google Pay. Tente novamente mais tarde");
                                 }
                             }
                             break;
                         case Activity.RESULT_CANCELED:
-                            mRequestPaymentPromise.reject(PAYMENT_CANCELLED, "payment has been canceled");
+                            mRequestPaymentPromise.reject(PAYMENT_CANCELLED, "Operação cancelada pelo usuário.");
 
                             break;
                         case AutoResolveHelper.RESULT_ERROR:
                             Status status = AutoResolveHelper.getStatusFromIntent(data);
-                            mRequestPaymentPromise.reject(E_AUTO_RESOLVE_FAILED, "auto resolve has been failed. status: " + status.getStatusMessage());
+                            mRequestPaymentPromise.reject(E_AUTO_RESOLVE_FAILED, "Falha não identificada: " + status.getStatusMessage());
                             break;
                         default:
                             // Do nothing.
@@ -361,8 +363,6 @@ public class GPay extends ReactContextBaseJavaModule {
 
             mRequestPaymentPromise = null;
         }
-
-
     };
 
 
